@@ -17,7 +17,6 @@ public:
   static void runPrompt();
   static void run(const std::string& source);
   static void error(int line, const std::string& message);
-
 };
 
 #endif // LOX_H

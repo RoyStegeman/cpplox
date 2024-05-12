@@ -19,7 +19,7 @@ enum TokenType {
   AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
   PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
-  EOF
+  END_OF_FILE // Use this instead of EOF to avoid conflict
 };
 
 #endif // TOKENTYPE_H

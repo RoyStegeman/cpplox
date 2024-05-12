@@ -31,9 +31,8 @@ private:
 
 
 public:
-  std::vector<Token> scanTokens;
-  static std::map<std::string, TokenType> keywords;
-
+  Scanner(const std::string& source);
+  std::vector<Token> scanTokens();
 };
 
 #endif // SCANNER_H

@@ -4,14 +4,15 @@
 #include <iostream>
 #include "TokenType.h"
 
-struct Token {
+class Token {
+private:
   TokenType type;
-  std::string lexeme;
   int line;
 
-  std::string toString() {
-    return type + " " + lexeme + " ";
-  }
+public:
+  std::string lexeme;
+  std::string toString();
+  Token(const TokenType type, const std::string lexeme, int line);
 };
 
 #endif // TOKEN_H
