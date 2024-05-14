@@ -21,6 +21,7 @@ private:
   void number();
   void string();
   bool isDigit(char c);
+  bool match(char expected);
   char peek();
   char peekNext();
   bool isAlpha(char c);
