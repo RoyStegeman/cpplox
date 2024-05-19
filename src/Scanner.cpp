@@ -1,6 +1,8 @@
 #include "Scanner.h"
 #include "Lox.h"
 
+Scanner::Scanner(const std::string &source) : source(source) {}
+
 std::vector<Token> Scanner::scanTokens()
 {
   while (!isAtEnd())
@@ -97,9 +99,70 @@ void Scanner::number() {
     while (isDigit(peek())) advance();
   }
 
+  // TODO: pass value of the number
   addToken(NUMBER);
 }
 
-void Scanner::string()
-{
+void Scanner::string() {
+  // continue parsing the string until we encounter '"'
+  while (peek() != '"' && !isAtEnd()) {
+    if (peek() == '\n') line++;
+    advance();
+  }
+
+  // if we don't encounter '"' before the end of the line, something went wrong
+  if (isAtEnd()) {
+    Lox::error(line, "Unterminated string.");
+    return;
+  }
+
+  // parse the closing '"'
+  advance();
+
+  // remove the quotes to be left with only the string
+  std::string value = source.substr(start+1, current-start-1);
+  // TODO: pass 'value' to addToken
+  addToken(STRING);
+}
+
+bool Scanner::match(char expected) {
+  if (isAtEnd()) return false;
+  if (source[current] != expected) return false;
+  current++;
+  return true;
+}
+
+char Scanner::peek () {
+  if (isAtEnd()) return '\0';
+  return source[current];
+}
+
+char Scanner::peekNext() {
+  if (current + 1 >= source.length()) return '\0';
+  return source[current+1];
+}
+
+bool Scanner::isAlphaNumeric(char c) {
+  return isAlpha(c) || isDigit(c);
+}
+
+bool Scanner::isAlpha(char c) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+bool Scanner::isDigit(char c) {
+  return c >= '0' && c <= '9';
+}
+
+bool Scanner::isAtEnd() {
+  return current >= source.length();
+}
+
+char Scanner::advance() {
+  return source[current++];
+}
+
+void Scanner::addToken(TokenType type) {
+  std::string text = source.substr(start,current-start);
+  tokens.push_back(Token(type, text, line));
 }
